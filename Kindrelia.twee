@@ -1,0 +1,223 @@
+:: StoryTitle
+Kindrelia
+
+
+:: StoryData
+{
+  "ifid": "78ACF449-5E0D-4CD4-B068-35E3C6E2287F",
+  "format": "SugarCube",
+  "format-version": "2.37.3",
+  "start": "Безымянный параграф",
+  "zoom": 1
+}
+
+
+:: ..но кто тогда рассказывает мне эту историю? {"position":"725,500","size":"100,100"}
+Меня зовут Аурен.
+
+Я не жил в Киндрелии. Никогда не бродил по её улицам, не слушал голосов её жителей и не видел света её рассветов.
+
+Когда Киндрелия погибла, я ещё не существовал. Я был всего лишь свёрнутым комком жизни в скорлупе, застывшим в неподвижном мире.
+
+Я не знаю, сколько времени провёл во тьме. Никто не знает. Я вылупился, когда Киндрелии уже не было. Лишь её останки стали частью нового мира — Zivery.
+
+Но даже в этом мире я чувствую её дыхание. В старых руинах, в сломанных артефактах, в затёртых записях, что едва уцелели. Киндрелия жива в них — растерзанная, забытая, но не исчезнувшая вовсе.
+
+Я посвятил свою жизнь её поискам. Собирал обрывки рассказов, пергаменты, слухи... Всё, что осталось. Я не жил в Киндрелии, но я знаю её. Почти так же, как знал бы родной дом, если бы вырос в его руинах.
+
+Этот труд — "Падение Киндрелии" — всё, что мне удалось собрать. В нём правда, догадки и, быть может, даже ошибки... Но я надеюсь, что однажды кто-то найдёт в этих строках то, чего не смог увидеть я.
+
+Потому что без понимания прошлого... невозможно построить будущее.
+
+
+
+
+:: Безымянный параграф {"position":"850,375","size":"100,100"}
+<<set $storyIndex to 0>>
+<<set $textContent to 
+[  "Солнце медленно поднималось над землёй, заливая мягким светом склоны холмов.",
+    "Лёгкий ветерок пробежал по лугам и замер, словно боясь нарушить тишину.",
+    "Реки текли неспешно, их воды ласкали берега, следуя неизменному течению.",
+    "Деревья тянулись к солнцу, распуская одинаковые, симметричные кроны.",
+    "Мир жил спокойно, размеренно.",
+    "Ничто не запаздывало, ничто не опережало свой срок.",
+    "В воздухе звенело пение птиц: чистое, стройное.",
+    "Одинаковые мелодии, одинаковые голоса.",
+    "Сотни лет подряд.",
+    "Здесь не было бурь.",
+    "Не было даже случайности.",
+    "Не рождались вопросы.",
+    "Не появлялись сомнения.",
+    "Никто не спорил, не разрушал.",
+    "Никто не создавал ничего нового.",
+    "Незыблемая.",
+    "Безмятежная.",
+    "Киндрелия...",
+    "Умирала."
+]>>
+
+<div id="background"></div>
+<img src="images/testimage.png" alt="Описание изображения" style="width:300px;">
+<img src="character.png" class="character">
+
+<div id="text-container">
+    <div id="story-text">$textContent[$storyIndex]</div>
+</div>
+
+<!-- Обёртка для кнопок -->
+<div id="button-container">
+    <!-- "Назад" -->
+    <div id="backBtn">
+        <<link "Назад">>
+            <<if $storyIndex > 0>>
+                <<set $storyIndex to $storyIndex - 1>>
+                <<replace "#story-text">>
+                    $textContent[$storyIndex]
+                <</replace>>
+       
+            <</if>>
+        <</link>>
+    </div>
+
+    <!-- "Дальше" -->
+    <div id="nextBtn">
+        <<link "Дальше">>
+            <<if $storyIndex < $textContent.length - 1>>
+                <<set $storyIndex to $storyIndex + 1>>
+                <<replace "#story-text">>
+                    $textContent[$storyIndex]
+                <</replace>>
+                      <</if>>
+        <</link>>
+    </div>
+</div>
+
+<div class="choice-links">
+    [[..но кто тогда рассказывает мне эту историю?]]
+    [[Не важно, пошли дальше]]
+</div>
+
+
+
+:: Не важно, пошли дальше {"position":"850,500","size":"100,100"}
+
+
+
+:: StoryScript [script]
+$(document).ready(function () {
+    console.log("Скрипт загружен и готов к работе.");
+
+    $("#next").on("click", function () {
+        console.log("Нажата кнопка 'Дальше'"); // Проверяем, работает ли нажатие
+    });
+});
+
+
+:: StoryStylesheet [stylesheet]
+#text-container {
+    position: absolute;
+    bottom: 140px;
+    left: 43%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-height: 40vh;
+    overflow: hidden;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+    color: #ffffff;
+    padding: 30px;
+    font-size: 24px;
+    line-height: 1.8;
+    font-family: "Georgia", serif;
+    text-align: justify;
+    box-sizing: border-box;
+}
+
+#story-text {
+    position: relative;
+    width: 55%;
+    margin-left: auto;
+    margin-right: 10%;
+    max-height: 40vh;
+    overflow: hidden;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+    color: #ffffff;
+    padding: 30px;
+    font-size: 24px;
+    line-height: 1.8;
+    font-family: "Georgia", serif;
+    text-align: justify;
+    box-sizing: border-box;
+}
+
+/* КОНТЕЙНЕР под кнопки */
+#button-container {
+  position: relative;  /* или absolute — зависит от того, куда ты хочешь их подвесить */
+  width: 120%;
+  height: 60px;        /* чтобы было место под кнопки */
+  margin-top: 10px;    /* можешь менять отступы по вкусу */
+}
+
+/* КНОПКА "Назад" */
+#backBtn {
+  position: absolute;
+  top: 0;
+  left: 5%;
+}
+/* КНОПКА "Дальше" */
+#nextBtn {
+  position: absolute;
+  top: 0;
+  right: 5%;
+}
+
+/* ССЫЛКИ внутри этих кнопок, делаем их похожими на кнопки */
+#backBtn a, 
+#nextBtn a {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+#backBtn a:hover,
+#nextBtn a:hover {
+  background-color: #45a049;
+
+
+}
+
+/* Центральные кнопки (зелёные ссылки) */
+.choice-links {
+    position: absolute;
+    bottom: 5%; 
+    left: 50%; 
+    transform: translateX(-50%);
+    text-align: center;
+    width: 100%;
+}
+
+.choice-links a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-size: 20px;
+    display: block;
+    margin: 5px 0;
+}
+
+.choice-links a:hover {
+    color: #45a049;
+}
+
+.character {
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+    height: 60%;
+    max-height: 500px;
+    width: auto;
+    z-index: 2;
+}
