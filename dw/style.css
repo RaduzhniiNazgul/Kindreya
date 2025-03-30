@@ -1,0 +1,175 @@
+@charset "utf-8"; /* Устанавливает кодировку документа CSS */
+
+/* CSS Document */
+
+/* Обнуление отступов и установка границ внутрь блока */
+* {
+  margin: 0; /* Убирает внешние отступы у всех элементов */
+  padding: 0; /* Убирает внутренние отступы у всех элементов */
+  box-sizing: border-box; /* Учитывает padding и border внутри ширины и высоты */
+}
+
+/* Устанавливаем размер и стиль для всей страницы */
+body, html {
+  width: 100%; /* Страница занимает всю ширину окна */
+  height: 100%; /* Страница занимает всю высоту окна */
+  font-family: Georgia, serif; /* Шрифт по умолчанию */
+  overflow: hidden; /* Отключает прокрутку */
+}
+
+/* Контейнер для всей сцены */
+#background {
+  position: relative; /* Контейнер становится родителем для абсолютных элементов */
+  width: 100vw; /* 100% ширины окна */
+  height: 100vh; /* 100% высоты окна */
+}
+
+/* Фоновое изображение */
+#bg-image {
+  position: absolute; /* Абсолютное позиционирование поверх родителя */
+  width: 100%; /* Ширина на весь экран */
+  height: 100%; /* Высота на весь экран */
+  object-fit: cover; /* Изображение заполняет блок, не теряя пропорции */
+  z-index: 0; /* Самый нижний слой */
+}
+
+/* Контейнер для персонажа */
+#character {
+  position: absolute; /* Абсолютное позиционирование внутри #background */
+  bottom: 0; /* Прижат к нижней части экрана */
+  left: 3%; /* Немного отступает от левого края */
+  height: 80%; /* Персонаж занимает 80% высоты экрана */
+  z-index: 2; /* Над фоном и над плашкой */
+}
+
+/* Изображение персонажа */
+#character img {
+  height: 100%; /* Растягивается по высоте контейнера */
+}
+
+/* Текстовая плашка внизу */
+#text-box {
+  position: absolute;              /* фиксируем плашку поверх экрана */
+  bottom: 0;                       /* прижимаем к нижнему краю */
+  width: 100%;                     /* плашка по всей ширине экрана */
+  height: 30vh;                    /* задаём высоту: 30% от высоты окна */
+  padding: 2rem;                   /* внутренние отступы */
+
+  background-image: url("img/textbox-frame.png");  /* декоративная рамка */
+  background-size: 100% 100%;     /* растягиваем фон по ширине и высоте блока */
+  background-repeat: no-repeat;   /* не повторяем изображение */
+  background-position: center;    /* центрируем фон */
+  background-color: transparent;  /* не нужен фон-подложка, только картинка */
+
+  color: white;                   /* цвет текста */
+  text-align: center;            /* текст по центру */
+  z-index: 1;                    /* приоритет по слоям */
+}
+
+.text-wrapper {
+  position: relative; /* для позиционирования вложенного текста */
+  width: 80vw; /* адаптивная ширина */
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* сама рамка-плашка */
+.frame-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* контент поверх картинки */
+.text-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  pointer-events: none; /* делает весь блок некликабельным, кроме кнопок */
+}
+
+/* разрешаем кликать по кнопкам */
+.text-content button {
+  pointer-events: all;
+}
+
+/* кнопки выбора */
+.choices {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.choices button {
+  background-color: #001fff;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+/* Контейнер с кнопками выбора */
+#choices {
+  margin-top: 1rem; /* Отступ сверху от текста */
+}
+
+/* Стили для каждой кнопки выбора */
+.choice {
+  display: inline-block; /* Размещаются в ряд, но как блоки */
+  margin: 0.3rem; /* Отступы между кнопками */
+  padding: 0.5rem 1rem; /* Внутренние отступы: сверху/снизу и по бокам */
+  background: navy; /* Тёмно-синий фон */
+  color: white; /* Белый текст */
+  border: none; /* Без рамки */
+  border-radius: 0.5rem; /* Скруглённые углы */
+  font-size: 1rem; /* Размер шрифта */
+  cursor: pointer; /* Курсор в виде руки при наведении */
+}
+
+/* Контейнер для кнопок "Назад" и "Далее" */
+#nav-buttons {
+  display: flex; /* Кнопки будут в ряд */
+  justify-content: space-between; /* Раздвигаем их по краям */
+  margin-top: 1rem; /* Отступ сверху от кнопок выбора */
+}
+
+/* Стили для кнопок "Назад" и "Далее" */
+.nav {
+  background: darkblue; /* Фон темно-синий */
+  color: white; /* Белый текст */
+  padding: 0.5rem 1rem; /* Внутренние отступы */
+  border: none; /* Без рамки */
+  border-radius: 0.5rem; /* Скругленные углы */
+  font-size: 1rem; /* Размер шрифта */
+  cursor: pointer; /* Курсор-рука при наведении */
+}
+
+/* Контейнер для кнопки-шестерёнки */
+#menu {
+  position: absolute; /* Абсолютное позиционирование */
+  top: 1rem; /* Отступ сверху */
+  left: 1rem; /* Отступ слева */
+  z-index: 3; /* Поверх всех остальных элементов */
+}
+
+/* Кнопка-шестерёнка */
+.gear {
+  background: transparent; /* Прозрачный фон */
+  font-size: 1.8rem; /* Размер иконки */
+  border: none; /* Без рамки */
+  color: white; /* Белый цвет */
+  cursor: pointer; /* Курсор-рука */
+}

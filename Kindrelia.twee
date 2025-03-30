@@ -12,7 +12,12 @@ Kindrelia
 }
 
 
-:: ..но кто тогда рассказывает мне эту историю? {"position":"725,500","size":"100,100"}
+:: ..Но кто тогда рассказывает мне эту историю? {"position":"750,525","size":"100,100"}
+<<include "CustomMenu">>
+
+
+
+
 Меня зовут Аурен.
 
 Я не жил в Киндрелии. Никогда не бродил по её улицам, не слушал голосов её жителей и не видел света её рассветов.
@@ -29,195 +34,591 @@ Kindrelia
 
 Потому что без понимания прошлого... невозможно построить будущее.
 
+[[]] Начало
+
+<<set $musicContinue to true>>
+
+<<include "CustomSoundToggle">>
+
+
+:: CustomMenu {"position":"100,100","size":"100,100"}
+<!-- Кнопка назад, которая безопасно работает -->
+<span id="custom-back-button">
+	<<link "⬅️">>
+		<<run Engine.backward()>>
+	<</link>>
+</span>
+
+
+<div id="custom-menu-toggle" onclick="$('#custom-menu').toggle()">
+	⚙️
+</div>
+
+<div id="custom-menu" style="display: none;">
+	<<link "⬅️ Назад">>
+		<<run Engine.backward()>>
+	<</link>>
+
+	<<link "➡️ Вперёд">>
+		<<run Engine.forward()>>
+	<</link>>
+
+	<<link "💾 Сохранить">>
+		<<run UI.saves()>>
+	<</link>>
+
+	<<link "🔄 Перезапустить">>
+		<<run Engine.restart()>>
+	<</link>>
+</div>
+
+
+
+
+:: CustomSoundToggle {"position":"200,100","size":"100,100"}
+<!-- CustomSoundToggle -->
+<div id="sound-button" class="sound-on"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const soundButton = document.getElementById("sound-button");
+
+    if (!soundButton) {
+        console.error("Кнопка звука не найдена!");
+        return;
+    }
+
+    if (State.variables.musicMuted) {
+        soundButton.classList.add("muted");
+    } else {
+        soundButton.classList.remove("muted");
+    }
+
+    soundButton.addEventListener("click", function () {
+        if (window.musicPlayer) {
+            if (!window.musicPlayer.paused) {
+                window.musicPlayer.pause();
+                State.variables.musicTime = 0;
+                soundButton.classList.add("muted");
+                soundButton.classList.remove("sound-on");
+                State.variables.musicMuted = true;
+            } else {
+                window.musicPlayer.currentTime = State.variables.musicTime || 0;
+                window.musicPlayer.play().catch(e => console.warn("Ошибка при запуске музыки:", e));
+                soundButton.classList.remove("muted");
+                soundButton.classList.add("sound-on");
+                State.variables.musicMuted = false;
+            }
+        }
+    });
+});
+</script>
 
 
 
 :: Безымянный параграф {"position":"850,375","size":"100,100"}
+<<set $fullText to `  <br><div class="centered-line">Давным давно...</div>
+Солнце медленно поднималось над землей, заливая мягким светом склоны холмов. <br>Лёгкий ветерок пробежал по лугам и замер, словно боясь нарушить тишину. <br>Реки текли неспешно, их воды ласкали берега, следуя неизменному течению. <br>Деревья тянулись к солнцу, распуская одинаковые, симметричные кроны.
+Мир жил спокойно, размеренно. <br><br>Ничто не запаздывало, ничто не опережало свой срок.
+В воздухе звенело пение птиц: чистое, стройное. <span class="small-space"></span>Одинаковые мелодии, одинаковые голоса. <span class="small-space"></span>Сотни лет подряд.
+Здесь не было бурь. <br><br>Не было даже случайности. 
+Не рождались вопросы. <br><br>Не появлялись сомнения.
+Никто не спорил, не разрушал. <br><br>Никто не создавал ничего нового.
+Незыблемая.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Безмятежная.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Киндрелия…
+ <br><div class="centered-line">Увядала...</div>
+`>>
+
+<<set $fullTextArray to $fullText.split("\n")>>  
 <<set $storyIndex to 0>>
-<<set $textContent to 
-[  "Солнце медленно поднималось над землёй, заливая мягким светом склоны холмов.",
-    "Лёгкий ветерок пробежал по лугам и замер, словно боясь нарушить тишину.",
-    "Реки текли неспешно, их воды ласкали берега, следуя неизменному течению.",
-    "Деревья тянулись к солнцу, распуская одинаковые, симметричные кроны.",
-    "Мир жил спокойно, размеренно.",
-    "Ничто не запаздывало, ничто не опережало свой срок.",
-    "В воздухе звенело пение птиц: чистое, стройное.",
-    "Одинаковые мелодии, одинаковые голоса.",
-    "Сотни лет подряд.",
-    "Здесь не было бурь.",
-    "Не было даже случайности.",
-    "Не рождались вопросы.",
-    "Не появлялись сомнения.",
-    "Никто не спорил, не разрушал.",
-    "Никто не создавал ничего нового.",
-    "Незыблемая.",
-    "Безмятежная.",
-    "Киндрелия...",
-    "Умирала."
-]>>
 
-<div id="background"></div>
-<img src="images/testimage.png" alt="Описание изображения" style="width:300px;">
-<img src="character.png" class="character">
+<!-- Основной контейнер -->
+<div id="page-container">
 
-<div id="text-container">
-    <div id="story-text">$textContent[$storyIndex]</div>
-</div>
+  <!-- Центр для ориентира -->
+  <div id="center-anchor"></div>
 
-<!-- Обёртка для кнопок -->
-<div id="button-container">
-    <!-- "Назад" -->
-    <div id="backBtn">
-        <<link "Назад">>
-            <<if $storyIndex > 0>>
-                <<set $storyIndex to $storyIndex - 1>>
-                <<replace "#story-text">>
-                    $textContent[$storyIndex]
-                <</replace>>
-       
-            <</if>>
-        <</link>>
+  <!-- Единый блок: плашка + текст + кнопки -->
+  <div id="dialog-block">
+    <!-- Плашка -->
+    <img src="images/secondPlashka.png" alt="Чёрная плашка" class="second-plashka">
+    <img src="images/plashka.png" alt="Золотая плашка" class="gold-plashka">
+
+    <!-- Текст -->
+    <div id="text-container" class="text-inside">
+      <<print $fullTextArray[$storyIndex]>>
     </div>
 
-    <!-- "Дальше" -->
-    <div id="nextBtn">
-        <<link "Дальше">>
-            <<if $storyIndex < $textContent.length - 1>>
-                <<set $storyIndex to $storyIndex + 1>>
-                <<replace "#story-text">>
-                    $textContent[$storyIndex]
-                <</replace>>
-                      <</if>>
+    <!-- Кнопки -->
+    <div class="buttons-wrapper">
+      <div id="backBtn">
+        <<link "Вернуть">>
+          <<if $storyIndex > 0>>
+            <<set $storyIndex to $storyIndex - 1>>
+            <<replace "#text-container">>
+              <<print $fullTextArray[$storyIndex]>>
+            <</replace>>
+          <<else>>
+            Повествование ещё не началось.
+          <</if>>
         <</link>>
+      </div>
+
+      <div id="nextBtn">
+        <<link "Далее">>
+          <<if $storyIndex < $fullTextArray.length - 1>>
+            <<set $storyIndex to $storyIndex + 1>>
+            <<replace "#text-container">>
+              <<print $fullTextArray[$storyIndex]>>
+            <</replace>>
+          <<else>>
+            История окончена.
+          <</if>>
+        <</link>>
+      </div>
     </div>
+  </div>
+
+  <!-- Отдельные элементы -->
+
+  <!-- Фон -->
+  <div id="background"></div>
+
+  <!-- Персонаж -->
+  <img src="character.png" class="character">
+
+  <!-- Кнопка звука -->
+  <div id="sound-button" class="sound-on"></div>
+
+  <!-- Ссылки -->
+  <div id="custom-links">
+    [[..Но кто тогда рассказывает мне эту историю?]]  
+    [[Не важно, идём дальше!]] 
+  </div>
+
 </div>
 
-<div class="choice-links">
-    [[..но кто тогда рассказывает мне эту историю?]]
-    [[Не важно, пошли дальше]]
-</div>
+<<include "CustomMenu">>
+
+<div id="center-anchor"></div>
 
 
 
-:: Не важно, пошли дальше {"position":"850,500","size":"100,100"}
+:: Не важно, идём дальше! {"position":"975,500","size":"100,100"}
+Даа
 
+<<set $musicContinue to true>>
+
+<<include "CustomMenu">>
+
+<<include "CustomSoundToggle">>
+
+
+:: Не! {"position":"975,625","size":"100,100"}
+
+
+
+
+ваоипалиукпцулпит
 
 
 :: StoryScript [script]
-$(document).ready(function () {
-    console.log("Скрипт загружен и готов к работе.");
+if (typeof State.variables === "undefined") {
+    State.variables = {};
+}
 
-    $("#next").on("click", function () {
-        console.log("Нажата кнопка 'Дальше'"); // Проверяем, работает ли нажатие
-    });
+// Параметр для хранения времени в State
+if (!State.variables.musicTime) {
+    State.variables.musicTime = 0;
+}
+
+// Параметр для хранения состояния звука
+if (typeof State.variables.musicMuted === "undefined") {
+    State.variables.musicMuted = false;
+}
+
+// Получение текущей страницы
+function passage() {
+    return State.passage;
+}
+
+// Проверяем, существует ли плеер
+if (!window.musicPlayer) {
+    const audio = document.createElement("audio");
+    audio.id = "background-music";
+    audio.src = "audio/Thebeginning.mp3";
+    audio.loop = true;
+    audio.volume = 0.5;
+    document.body.appendChild(audio);
+
+    // Указываем список страниц, где должна играть музыка
+    const pagesWithMusic = [
+        "Безымянный параграф",      
+        "..Но кто тогда рассказывает мне эту историю?", 
+        "Не важно, идём дальше!"
+    ];
+
+    // Проверяем, находится ли игрок в одной из нужных страниц
+    if (pagesWithMusic.includes(passage()) && !State.variables.musicMuted) {
+        if (State.variables.musicTime) {
+            audio.currentTime = State.variables.musicTime; // Продолжаем с того же места
+        }
+        audio.play().catch(e => console.warn("Ошибка при запуске музыки:", e));
+    } else {
+        audio.pause();
+        State.variables.musicTime = 0;
+    }
+
+    // Сохраняем плеер в глобальной переменной
+    window.musicPlayer = audio;
+
+    // Сохранение позиции каждые 3 секунды
+    window.setInterval(() => {
+        if (!audio.paused) {
+            State.variables.musicTime = audio.currentTime;
+        }
+    }, 3000);
+
+    // Включение по первому клику (для случаев блокировки автозапуска)
+    window.addEventListener("click", function () {
+        if (audio.paused && pagesWithMusic.includes(passage()) && !State.variables.musicMuted) {
+            audio.play().catch(e => console.warn("Ошибка при запуске музыки:", e));
+        }
+    }, { once: true });
+}
+
+// 🔹 Остановка музыки при нажатии на ссылку "Не!"
+$(document).on('click', 'a[data-passage="Не!"]', function () {
+    if (window.musicPlayer) {
+        window.musicPlayer.pause();
+        State.variables.musicTime = 0;
+        State.variables.musicMuted = true;  // Запоминаем состояние
+        $("#sound-button").addClass("muted").removeClass("sound-on");  // Добавляем класс "muted"
+    }
+});
+
+// 🔹 Остановка/включение музыки при нажатии на кнопку
+$(document).on('click', '#sound-button', function () {
+    if (window.musicPlayer) {
+        const soundButton = $("#sound-button");
+
+        if (!window.musicPlayer.paused) {
+            window.musicPlayer.pause();
+            State.variables.musicTime = 0;
+            State.variables.musicMuted = true;  // Запоминаем состояние
+            soundButton.addClass("muted").removeClass("sound-on");  // Добавляем класс "muted"
+        } else {
+            window.musicPlayer.currentTime = State.variables.musicTime || 0;
+            window.musicPlayer.play().catch(e => console.warn("Ошибка при запуске музыки:", e));
+            State.variables.musicMuted = false;  // Запоминаем состояние
+            soundButton.addClass("sound-on").removeClass("muted");  // Убираем класс "muted"
+        }
+    }
 });
 
 
 :: StoryStylesheet [stylesheet]
-#text-container {
-    position: absolute;
-    bottom: 140px;
-    left: 43%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-height: 40vh;
-    overflow: hidden;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
-    color: #ffffff;
-    padding: 30px;
-    font-size: 24px;
-    line-height: 1.8;
-    font-family: "Georgia", serif;
-    text-align: justify;
-    box-sizing: border-box;
+/* Центр привязки */
+#center-anchor {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  pointer-events: none;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 4px rgba(255, 0, 0, 0.7);
 }
 
-#story-text {
-    position: relative;
-    width: 55%;
-    margin-left: auto;
-    margin-right: 10%;
-    max-height: 40vh;
-    overflow: hidden;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
-    color: #ffffff;
-    padding: 30px;
-    font-size: 24px;
-    line-height: 1.8;
-    font-family: "Georgia", serif;
-    text-align: justify;
-    box-sizing: border-box;
+
+/* Обрезаем страницу что бы лишнее не вылазило) */
+/* Оформление всей страницы */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+
+  /* Прокрутка только по вертикали */
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  /* Фон вне основной сцены */
+  background-color: black;
+
+  /* НЕ используем flex — это ломало позиционирование */
+  display: block;
 }
 
-/* КОНТЕЙНЕР под кнопки */
-#button-container {
-  position: relative;  /* или absolute — зависит от того, куда ты хочешь их подвесить */
-  width: 120%;
-  height: 60px;        /* чтобы было место под кнопки */
-  margin-top: 10px;    /* можешь менять отступы по вкусу */
+
+/* Контейнер страницы */
+#page-container {
+  width: 100%;
+  max-width: 1440px;
+  aspect-ratio: 16 / 10;
+  margin: 0 auto;
+  position: relative;
+  overflow: visible;
 }
 
-/* КНОПКА "Назад" */
-#backBtn {
-  position: absolute;
+
+/* Фон */
+#background {
+  background: url("images/yourBackgroundImage.png") no-repeat center center;
+  background-size: cover;
+  position: fixed;
   top: 0;
-  left: 5%;
-}
-/* КНОПКА "Дальше" */
-#nextBtn {
-  position: absolute;
-  top: 0;
-  right: 5%;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
 }
 
-/* ССЫЛКИ внутри этих кнопок, делаем их похожими на кнопки */
-#backBtn a, 
-#nextBtn a {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 18px;
-  text-decoration: none;
-}
-
-#backBtn a:hover,
-#nextBtn a:hover {
-  background-color: #45a049;
-
-
-}
-
-/* Центральные кнопки (зелёные ссылки) */
-.choice-links {
-    position: absolute;
-    bottom: 5%; 
-    left: 50%; 
-    transform: translateX(-50%);
-    text-align: center;
-    width: 100%;
-}
-
-.choice-links a {
-    color: #4CAF50;
-    text-decoration: none;
-    font-size: 20px;
-    display: block;
-    margin: 5px 0;
-}
-
-.choice-links a:hover {
-    color: #45a049;
-}
-
+/* Персонаж */
 .character {
-    position: absolute;
-    bottom: 10%;
-    left: 10%;
-    height: 60%;
-    max-height: 500px;
-    width: auto;
-    z-index: 2;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-180%, 15%);
+  height: 60vh;
+  max-height: 500px;
+  width: auto;
+  z-index: 5;
 }
+
+/* БЛОК диалога, плашек, текста и кнопок */
+#dialog-block {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -10%); /* смещение блока вверх от центра */
+  width: min(90vw, 1000px); /* адаптивная ширина */
+  aspect-ratio: 3 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+/* Плашки */
+.second-plashka, .gold-plashka {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.second-plashka { z-index: 1; opacity: 0.8; }
+.gold-plashka   { z-index: 3; }
+
+/* Текст */
+.text-inside {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  height: 85%;
+  padding: 6%;
+  box-sizing: border-box;
+  color: white;
+  font-family: "Georgia", serif;
+  font-size: min(1.6vw, 24px);
+  line-height: 1.6;
+  text-align: justify;
+  overflow: auto;
+  user-select: none;
+}
+
+/* КНОПКИ внутри блока */
+#nextBtn .link-internal,
+#backBtn .link-internal {
+  display: inline-block;
+  padding: 1vw 3vw;
+  border-radius: 1vw;
+  font-size: min(2vw, 22px);
+  color: white;
+  font-weight: bold;
+  white-space: nowrap;
+  cursor: pointer;
+  z-index: 9;
+  user-select: none;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  transition: color 0.3s ease;
+}
+
+#nextBtn .link-internal:hover,
+#backBtn .link-internal:hover {
+  color: #ff69b4;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+}
+
+
+/* Звук */
+#sound-button {
+  width: min(100px, 8vw);
+  height: min(100px, 8vw);
+  background-image: url('ikon/sound2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+  pointer-events: auto;
+}
+#sound-button.muted {
+  background-image: url('ikon/sound1.png');
+}
+
+#sound-button.muted {
+    background-image: url('ikon/sound1.png'); 
+}
+
+#custom-links {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 1000;
+}
+
+
+/* Оформление ссылок [[..Но кто тогда рассказывает мне эту историю?]] */
+#custom-links .link-internal {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: min(2vw, 22px);
+
+  text-align: center;
+  text-shadow: 0 0 10px rgba(0, 170, 255, 0.8);
+  cursor: pointer;
+  white-space: nowrap;
+
+  user-select: none;
+}
+
+#custom-links .link-internal:hover {
+  color: #00aaff;
+  text-shadow: 0 0 15px rgba(0, 170, 255, 1);
+}
+
+
+/* Дополнительные настройки */
+.small-space {
+    display: block;
+    height: 10px;
+}
+
+.centered-line {
+    display: block;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.shifted-line {
+    display: inline-block;
+    margin-left: 15ch;
+}
+
+.faded-text {
+    color: #000000;
+    text-shadow: 0 0 15px rgba(255, 77, 77, 0.8);
+    font-weight: bold;
+  }
+  
+
+/* Меню */
+
+/* Шестеренка */
+#custom-menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 100px;
+    font-size: 48px;
+    z-index: 1000;
+    cursor: pointer;
+    color: white;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+
+}
+
+/* черная плашка шестеренки */
+#custom-menu {
+    position: fixed;
+    top: 80px;
+    left: 30px;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 12px 16px;
+    border-radius: 12px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    min-width: 200px;
+   font-size: 0; /* 🔥 Убирает "зазоры" от пробелов/переносов */
+}
+
+.menu-button {
+    display: flex;
+    align-items: center;
+   line-height: 1.2; /* Не обязательно, но уменьшит вертикальность */
+  border: 1px solid red; /* временная рамка */
+}
+
+#custom-menu .link-internal {
+    all: unset;
+    display: inline-block; /* Возвращаем отображение */
+    width: 100%;
+    margin: 2px 0;
+    padding: 4px 6px;
+    font-size: 16px; /* Восстанавливаем шрифт */
+    line-height: 1.2;
+    font-weight: bold;
+    color: white;
+    text-align: left;
+    white-space: nowrap;
+    box-sizing: border-box;
+  
+    cursor: pointer;
+}
+
+#ui-bar {
+    display: none !important;
+}
+
+/* Кнопка "Назад" рядом с шестерёнкой */
+#custom-back-button {
+    position: fixed;
+    top: 20px;
+    left: 10px;
+    font-size: 36px;
+    z-index: 1001;
+    cursor: pointer;
+    color: white;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    transition: color 0.3s ease;
+}
+
+#custom-back-button:hover {
+    color: #00aaff;
+}
+

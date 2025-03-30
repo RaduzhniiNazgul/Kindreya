@@ -104,201 +104,817 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<tw-storydata name="Kindrelia" startnode="1" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="78ACF449-5E0D-4CD4-B068-35E3C6E2287F" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">#text-container {
-    position: absolute;
-    top: 530px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    height: 50vh;
-    overflow: hidden;
-    background: url("images/semiTransparentBG.png") no-repeat center center;
-    background-size: cover;
-    color: #ffffff;
-    padding: 30px;
-    font-size: 24px;
-    line-height: 1.8;
-    font-family: "Georgia", serif;
-    text-align: justify;
-    box-sizing: border-box;
+	<tw-storydata name="Kindrelia" startnode="1" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="78ACF449-5E0D-4CD4-B068-35E3C6E2287F" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+/* ===== ОБЩЕЕ ОФОРМЛЕНИЕ СЦЕНЫ ===== */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background-color: black;
 }
 
-#story-text {
-    position: relative;
-    width: 70%;
-    margin-left: 30%;
-    margin-right: 0%;
-    max-height: 90vh;
-    overflow: hidden;
+/* Контейнер сцены */
 
-    text-align: center;
-    white-space: pre-line;
-
-    /* Фиксированная высота для предотвращения скачков */
-    height: auto;
-    min-height: 200px; /* Увеличено для стабильности */
-
-    background: none;
-
-    color: #ffffff;
-    padding: 30px;
-    font-size: 24px;
-    line-height: 1.8;
-    font-family: "Georgia", serif;
-    text-align: justify;
-    box-sizing: border-box;
+#scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: black;
+  z-index: 1;
 }
 
-/* Убираем пустые строки и пробелы */
-#story-text p {
-    margin: 0;
-    padding: 0;
+#center-anchor {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  overflow: hidden; /* на всякий случай */
+  margin: 0 auto; /* центрирование */
 }
 
-#backBtn a {
-    background-color: #0e3877; /* Зелёный фон */
-    color: #ffffff;            /* Белый текст */
-    border: 2px solid #4CAF50; /* Граница для четкости */
-    padding: 10px 20px;
-    border-radius: 5px;        /* Скругленные края */
-    text-decoration: none;     /* Убираем подчёркивание */
-    font-weight: 700;          /* Жирный шрифт */
-    font-size: 20px;           /* Увеличенный размер текста */
-    display: inline-block;     /* Корректное позиционирование */
-    cursor: pointer;           /* Курсор в виде руки */
-}
-
-#backBtn a:hover {
-    background-color: #45a049; /* Яркий зелёный при наведении */
-    border-color: #45a049;
-    color: #ffffff;
-}
-
-#backBtn {
-    position: absolute;
-    top: 90%;    /* Поднять выше */
-    left: 20%;   /* Подвинуть ближе к центру */
-    transform: translateY(-50%);
-    z-index: 2;
-}
-  
-
-.link-internal {
-    position: absolute;
-    bottom: 5%;               /* Положение на экране */
-    left: 50%;                /* Центрирование */
-    transform: translateX(-50%);
-
-    color: #86cde4;           /* Голубой цвет */
-    text-shadow: 0 0 15px rgba(0, 191, 255, 0.8); /* Эффект свечения */
-   
-    padding: 10px 20px;       /* Увеличенные отступы */
-    border-radius: 5px;       /* Скруглённые углы */
-    text-decoration: none;    /* Убрать подчеркивание */
-    font-weight: 700;         /* Жирный текст */
-    font-size: 22px;          /* Крупный размер текста */
-    cursor: pointer;          /* Курсор в виде руки */
-}
-
-.link-internal:hover {
-    color: #ff69b4;           /* Ярко-розовый цвет при наведении */
-    text-shadow: 0 0 20px rgba(255, 105, 180, 0.9); /* Яркое свечение */
-}
-
-  
-
-
-/* Персонаж */
-.character {
-    position: absolute;
-    bottom: 0%;
-    left: 10%;
-    height: 60%;
-    max-height: 500px;
-    width: auto;
-    z-index: 2;
-}
 
 /* Фон */
 #background {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+    width: 1920px;             /* 🔧 Фиксируем ширину */
+  height: 1080px;            /* 🔧 Фиксируем высоту */
+  background-image: none; /* ⬅️ ДАЙ ЕМУ ЧТО-ТО по умолчанию */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+/* Второй слой фона поверх основного, но под текстом и персонажем */
+#foreground-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;             /* 🔧 Фиксируем ширину */
+  height: 1080px;            /* 🔧 Фиксируем высоту */
+  background-image: url('images/foregroundImage.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  z-index: 2;                /* Между фоном (0) и персонажем (5) */
+  pointer-events: none;     /* Клики проходят сквозь */
+}
+
+
+
+
+
+/* ===== ПЕРСОНАЖ ===== */
+.character {
+  position: absolute;
+  top: 200px;
+  left: 1px;
+  height: 800px;
+  width: auto;
+  z-index: 5;
+}
+
+
+/* ===== ПЛАШКА, ТЕКСТ, КНОПКИ ===== */
+#dialog-block {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+   width: 1900px;   /* 🔥 почти на весь экран */
+  height: 420px;   /* чуть выше, чтобы не было тесно */
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+}
+
+
+/* Плашка */
+.gold-plashka {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Текст */
+.text-inside {
+  position: relative;
+  z-index: 2;
+
+  width: 1560px;               /* 🔧 увеличили в соответствии с новой шириной */
+  height: 300px;               /* чуть выше текста */
+  padding: 60px 290px 30px 300px;
+/* отступы: сверху  top  справа right  bottom  left */
+  font-family: Georgia, serif;
+  font-size: 23px;
+  line-height: 1.7;
+
+  color: white;
+  overflow: hidden;
+  text-align: justify;
+  box-sizing: border-box;
+}
+
+
+
+
+/* Кнопки-стрелки */
+/* Кнопки-стрелки */
+.arrow-button {
+  position: absolute;
+  bottom: 50px;
+  width: 120px;
+  height: auto;
+  z-index: 3;
+  background: none !important;
+  border: none !important;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  outline: none !important;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.arrow-button:hover,
+.arrow-button:focus,
+.arrow-button:active,
+.arrow-button:focus-visible {
+  transform: scale(1.1); /* Увеличение при наведении */
+  background: none !important;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+#backBtn {
+  left: 410px;
+}
+
+#nextBtn {
+  right: 410px;
+}
+
+.btn-image {
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  outline: none;
+}
+
+
+
+/* ===== ЗВУК ===== */
+#sound-button {
+  position: absolute;
+  top: 30px;
+  left: 1900px;
+  width: 100px;
+  height: 100px;
+  background-image: url('ikon/sound2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  z-index: 999;
+}
+
+#sound-button.muted {
+  background-image: url('ikon/sound1.png');
+}
+
+
+
+/* ===== ЭФФЕКТЫ ТЕКСТА ===== */
+.small-space {
+  display: block;
+  height: 10px;
+}
+
+.centered-line {
+  display: block;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.shifted-line {
+  display: inline-block;
+  margin-left: 15ch;
+}
+
+.faded-text {
+  color: #000000;
+  text-shadow: 0 0 15px rgba(255, 77, 77, 0.8);
+  font-weight: bold;
+}
+
+/* ===== Ссылки в плашке ===== */
+.choice-link {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  margin: -15px 0;
+  text-shadow: 0 0 10px rgba(255,255,255,0.3);
+  transition: transform 0.2s ease;
+}
+
+.choice-link:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 15px rgba(255,255,255,0.6);
+}
+
+
+
+/* ===== МЕНЮ И ШЕСТЕРЁНКА ===== */
+#custom-menu-toggle {
+  position: absolute;
+  top: -13px;
+  left: 100px;
+  font-size: 48px;
+  z-index: 1000;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+}
+
+#custom-menu {
+  position: absolute;
+  top: 100px;
+  left: 3px;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 12px 16px;
+  border-radius: 12px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  min-width: 200px;
+  font-size: 0;
+}
+
+.menu-button {
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+#custom-menu .link-internal {
+  all: unset;
+  display: inline-block;
+  width: 100%;
+  margin: 2px 0;
+  padding: 4px 6px;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: bold;
+  color: white;
+  text-align: left;
+  white-space: nowrap;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+/* черная плашка шестеренки */
+#custom-menu {
+    position: fixed;
+    top: 80px;
+    left: 30px;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 12px 16px;
+    border-radius: 12px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    min-width: 200px;
+   font-size: 0; /* 🔥 Убирает "зазоры" от пробелов/переносов */
+}
+
+.menu-button {
+    display: flex;
+    align-items: center;
+   line-height: 1.2; /* Не обязательно, но уменьшит вертикальность */
+  border: 1px solid red; /* временная рамка */
+}
+
+#custom-menu .link-internal {
+    all: unset;
+    display: inline-block; /* Возвращаем отображение */
     width: 100%;
-    height: 100%;
-    background: url("images/yourBackgroundImage.png") no-repeat center center;
-    background-size: cover;
-    z-index: -1;
+    margin: 2px 0;
+    padding: 4px 6px;
+    font-size: 16px; /* Восстанавливаем шрифт */
+    line-height: 1.2;
+    font-weight: bold;
+    color: white;
+    text-align: left;
+    white-space: nowrap;
+    box-sizing: border-box;
+  
+    cursor: pointer;
 }
-</style><script role="script" id="twine-user-script" type="text/twine-javascript">window.nextText = function() {
-    if (typeof variables === 'undefined') return; // Проверяем переменные для защиты от ошибки
 
-    if (State.variables.storyIndex < State.variables.fullText.length - 1) {
-        State.variables.storyIndex++;
-        document.getElementById("story-text").innerHTML = State.variables.fullText[State.variables.storyIndex];
+#ui-bar {
+    display: none !important;
+}
+
+/* Кнопка "Назад" рядом с шестерёнкой */
+#custom-back-button {
+    position: fixed;
+    top: 20px;
+    left: 10px;
+    font-size: 36px;
+    z-index: 1001;
+    cursor: pointer;
+    color: white;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    transition: color 0.3s ease;
+}
+
+#custom-back-button:hover {
+    color: #00aaff;
+}
+
+/* Блок с текстом Аурена */
+.auren-block {
+  max-width: 1300px;                  /* увеличенная ширина */
+  margin-top: 5vh;                   /* отступ сверху */
+  margin-left: -18vw;                  /* сдвигаем левее */
+  padding: 2em;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-family: Georgia, serif;
+  font-size: 1.1em;
+  line-height: 1.7;
+  text-align: justify;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  width: 90vw;
+
+}
+
+/* Контейнер панели выбора */
+#choice-panel {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px; /* подгони под размер фона */
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+/* Задний фон — PNG с рамкой */
+.choice-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Содержимое — ссылки */
+.choice-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 40px 20px;
+}
+
+/* Ссылки */
+.choice-content .link-internal {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.choice-content .link-internal:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+
+</style><script role="script" id="twine-user-script" type="text/twine-javascript">if (typeof State.variables === "undefined") {
+    State.variables = {};
+}
+
+// 🕒 Сохраняем прогресс воспроизведения
+if (!State.variables.musicTime) {
+    State.variables.musicTime = 0;
+}
+
+// 🔇 Флаг для заглушённой музыки
+if (typeof State.variables.musicMuted === "undefined") {
+    State.variables.musicMuted = false;
+}
+
+// 🎵 Имя трека по умолчанию
+if (!State.variables.musicTrack) {
+    State.variables.musicTrack = "Thebeginning.mp3";
+}
+
+// Получаем имя текущей страницы
+function passage() {
+    return State.passage;
+}
+
+// Если плеера ещё нет — создаём
+if (!window.musicPlayer) {
+    const audio = document.createElement("audio");
+    audio.id = "background-music";
+    audio.loop = true;
+    audio.volume = 0.5;
+    document.body.appendChild(audio);
+    window.musicPlayer = audio;
+
+    // 🔄 Периодически сохраняем текущую позицию
+    window.setInterval(() => {
+        if (!audio.paused) {
+            State.variables.musicTime = audio.currentTime;
+        }
+    }, 3000);
+
+    // 🖱️ Первый клик активирует музыку, если браузер блокирует autoplay
+    window.addEventListener("click", function () {
+        if (audio.paused && !State.variables.musicMuted) {
+            audio.play().catch(e => console.warn("Ошибка при запуске музыки:", e));
+        }
+    }, { once: true });
+}
+
+// 🔁 Обновляем трек и воспроизведение при каждой загрузке
+$(document).on(':passagerender', function () {
+    const audio = window.musicPlayer;
+    const track = State.variables.musicTrack || "Thebeginning.mp3";
+
+    // Меняем трек, если он другой
+    if (!audio.src.includes(track)) {
+        audio.src = "audio/" + track;
+        audio.load();
     }
-}
 
-function nextText() {
-    if (typeof variables === 'undefined') return; // Проверяем переменные для защиты от ошибки
-
-    if (variables.storyIndex < variables.fullText.length - 1) {
-        variables.storyIndex++;
-        document.getElementById("story-text").innerHTML = variables.fullText[variables.storyIndex];
+    if (!State.variables.musicMuted) {
+        if (State.variables.musicTime) {
+            audio.currentTime = State.variables.musicTime;
+        }
+        audio.play().catch(e => console.warn("Автозапуск заблокирован:", e));
+    } else {
+        audio.pause();
     }
-}
-</script><tw-passagedata pid="1" name="Безымянный параграф" tags="" position="850,375" size="100,100">&lt;&lt;set $storyIndex to 0&gt;&gt;
+});
 
-&lt;&lt;set $fullText to [
-    &quot;Солнце медленно поднималось над землёй, заливая мягким светом склоны холмов. Лёгкий ветерок пробежал по лугам и замер, словно боясь нарушить тишину. Реки текли неспешно, их воды ласкали берега, следуя неизменному течению.&quot;,
-    &quot;Деревья тянулись к солнцу, распуская одинаковые, симметричные кроны. Мир жил спокойно, размеренно. Ничто не запаздывало, ничто не опережало свой срок.&quot;,
-    &quot;В воздухе звенело пение птиц: чистое, стройное. Одинаковые мелодии, одинаковые голоса. Сотни лет подряд.&quot;,
-    &quot;Здесь не было бурь. Не было даже случайности. Не рождались вопросы.&quot;,
-    &quot;Не появлялись сомнения. Никто не спорил, не разрушал. Никто не создавал ничего нового. Незыблемая. Безмятежная. Киндрелия... Умирала.&quot;
+// ❌ Остановка при клике на "Не!"
+$(document).on('click', 'a[data-passage="Не!"]', function () {
+    if (window.musicPlayer) {
+        window.musicPlayer.pause();
+        State.variables.musicTime = 0;
+        State.variables.musicMuted = true;
+        $("#sound-button").addClass("muted").removeClass("sound-on");
+    }
+});
+
+// 🔊 Кнопка включения/выключения звука
+$(document).on('click', '#sound-button', function () {
+    const audio = window.musicPlayer;
+    const soundButton = $("#sound-button");
+
+    if (!audio.paused) {
+        audio.pause();
+        State.variables.musicTime = 0;
+        State.variables.musicMuted = true;
+        soundButton.addClass("muted").removeClass("sound-on");
+    } else {
+        audio.currentTime = State.variables.musicTime || 0;
+        audio.play().catch(e => console.warn("Ошибка при запуске музыки:", e));
+        State.variables.musicMuted = false;
+        soundButton.addClass("sound-on").removeClass("muted");
+    }
+});
+
+
+
+//Отвечает за стрелки 
+
+$(document).on(':passagerender', function () {
+  // Сброс обработчиков
+  $(document).off('click', '#nextBtn');
+  $(document).off('click', '#backBtn');
+
+  // Кнопка ВПЕРЁД →
+  $(document).on('click', '#nextBtn', function () {
+    if (State.variables.universalIndex < State.variables.storyBlocks.length - 1) {
+      State.variables.universalIndex++;
+      $('#text-container').html(State.variables.storyBlocks[State.variables.universalIndex].replace(/\n/g, "<br>"));
+      $('#choice-panel').remove();
+    } else {
+      if (!$('#choice-panel').length) {
+        const choiceLinks = State.variables.choiceLinks || [];
+        const html = `
+          <div id="choice-panel">
+            <img src="images/plas.png" class="choice-background">
+            <div class="choice-content">
+              ${choiceLinks.map(link => {
+                const [text, passage] = link.split("|");
+                return `<a class='link-internal' data-passage='${passage}'>${text}</a>`;
+              }).join("<br>")}
+            </div>
+          </div>
+        `;
+        $('#dialog-block').append(html);
+      }
+    }
+  });
+
+  // Кнопка НАЗАД ←
+  $(document).on('click', '#backBtn', function () {
+    if (State.variables.universalIndex > 0) {
+      State.variables.universalIndex--;
+      $('#text-container').html(State.variables.storyBlocks[State.variables.universalIndex].replace(/\n/g, "<br>"));
+      $('#choice-panel').remove();
+    }
+  });
+});
+</script><tw-passagedata pid="1" name="Начало" tags="" position="850,375" size="100,100">&lt;&lt;set $foregroundImage = &quot;foregroundImage.png&quot;&gt;&gt;
+&lt;&lt;set $backgroundImage = &quot;yourBackgroundImage.png&quot;&gt;&gt;
+&lt;&lt;set $characterImage = &quot;character.png&quot;&gt;&gt;
+&lt;&lt;set $musicTrack = &quot;Thebeginning.mp3&quot;&gt;&gt;
+
+&lt;&lt;set $storyBlocks = [
+  &quot;Первый блок текста.\nС новой строкой.&quot;,
+  &quot;Второй блок.&quot;,
+  &quot;Финал — после которого появятся ссылки.&quot;
 ]&gt;&gt;
 
-&lt;div id=&quot;background&quot;&gt;&lt;/div&gt;
+&lt;&lt;set $choiceLinks = [
+  &quot;Узнать, кто рассказывает|..Но кто тогда рассказывает мне эту историю?&quot;,
+  &quot;Пропустить вступление|Не важно, идём дальше!&quot;
+]&gt;&gt;
 
-&lt;img src=&quot;character.png&quot; class=&quot;character&quot;&gt;
 
-&lt;!-- Текстовое окно с функцией клика --&gt;
-&lt;div id=&quot;text-container&quot; onclick=&quot;nextText()&quot;&gt;
-    &lt;div id=&quot;story-text&quot;&gt;
-        &lt;&lt;print $fullText[$storyIndex]&gt;&gt;
-    &lt;/div&gt;
+&lt;&lt;set $universalIndex = 0&gt;&gt;
+&lt;&lt;goto &quot;TextEngineUniversal&quot;&gt;&gt;
+</tw-passagedata><tw-passagedata pid="2" name="..Но кто тогда рассказывает мне эту историю?" tags="" position="750,525" size="100,100">&lt;div class=&quot;auren-block&quot;&gt;
+  Меня зовут Аурен.&lt;br&gt;&lt;br&gt;
+
+  Я не жил в Киндрелии. Никогда не бродил по её улицам, не слушал голосов её жителей и не видел света её рассветов.&lt;br&gt;
+  Когда Киндрелия погибла, я ещё не существовал. Я был всего лишь свёрнутым комком жизни в скорлупе, застывшим в неподвижном мире.&lt;br&gt;
+  Я не знаю, сколько времени провёл во тьме. Никто не знает. Я вылупился, когда Киндрелии уже не было. Лишь её останки стали частью нового мира — Zivery.&lt;br&gt;
+  Но даже в этом мире я чувствую её дыхание. В старых руинах, в сломанных артефактах, в затёртых записях, что едва уцелели. Киндрелия жива в них — растерзанная, забытая, но не исчезнувшая вовсе.&lt;br&gt;
+  Я посвятил свою жизнь её поискам. Собирал обрывки рассказов, пергаменты, слухи... Всё, что осталось. Я не жил в Киндрелии, но я знаю её. Почти так же, как знал бы родной дом, если бы вырос в его руинах.&lt;br&gt;
+  Этот труд — &quot;Падение Киндрелии&quot; — всё, что мне удалось собрать. В нём правда, догадки и, быть может, даже ошибки... Но я надеюсь, что однажды кто-то найдёт в этих строках то, чего не смог увидеть я.&lt;br&gt;
+  Потому что без понимания прошлого... невозможно построить будущее.
 &lt;/div&gt;
 
-&lt;!-- Кнопка &quot;Вернуть&quot; --&gt;
-&lt;div id=&quot;backBtn&quot;&gt;
-    &lt;&lt;link &quot;Вернуть&quot;&gt;&gt;
-        &lt;&lt;if $storyIndex &gt; 0&gt;&gt;
-            &lt;&lt;set $storyIndex to $storyIndex - 1&gt;&gt;
-            &lt;&lt;replace &quot;#story-text&quot;&gt;&gt;
-                &lt;&lt;print $fullText[$storyIndex]&gt;&gt;
-            &lt;&lt;/replace&gt;&gt;
-        &lt;&lt;else&gt;&gt;
-            Повествование ещё не началось.
-        &lt;&lt;/if&gt;&gt;
-    &lt;&lt;/link&gt;&gt;
+&lt;&lt;include &quot;CustomMenu&quot;&gt;&gt;
+&lt;&lt;include &quot;CustomSoundToggle&quot;&gt;&gt;
+&lt;&lt;set $musicContinue to true&gt;&gt;
+
+</tw-passagedata><tw-passagedata pid="3" name="Не важно, идём дальше!" tags="" position="975,500" size="100,100">Даа
+
+&lt;&lt;set $musicContinue to true&gt;&gt;
+
+&lt;&lt;include &quot;CustomMenu&quot;&gt;&gt;
+
+&lt;&lt;include &quot;CustomSoundToggle&quot;&gt;&gt;
+
+&lt;&lt;set $storyBlocks = [
+  &quot;Киндрелия... умирала.\nМир рушился под тяжестью того, что было создано с любовью и болью.\nИ всё же, из её обломков рождалось нечто новое.&quot;,
+  &quot;Но кто тогда рассказывает мне эту историю?&quot;,
+  &quot;Нас ждёт путь сквозь руины прошлого.&quot;
+]&gt;&gt;
+
+&lt;&lt;set $choiceLinks = [
+  &quot;Продолжай!|СледующийПассаж&quot;,
+  &quot;Кто ты?|Начало&quot;
+]&gt;&gt;
+
+&lt;&lt;set $universalIndex = 0&gt;&gt; /* сброс показа с начала */
+&lt;&lt;goto &quot;TextEngineUniversal&quot;&gt;&gt;
+</tw-passagedata><tw-passagedata pid="4" name="CustomMenu" tags="" position="100,100" size="100,100">&lt;!-- Кнопка назад, которая безопасно работает --&gt;
+&lt;span id=&quot;custom-back-button&quot;&gt;
+	&lt;&lt;link &quot;⬅️&quot;&gt;&gt;
+		&lt;&lt;run Engine.backward()&gt;&gt;
+	&lt;&lt;/link&gt;&gt;
+&lt;/span&gt;
+
+
+&lt;div id=&quot;custom-menu-toggle&quot; onclick=&quot;$(&#39;#custom-menu&#39;).toggle()&quot;&gt;
+	⚙️
 &lt;/div&gt;
 
-[[..но кто тогда рассказывает мне эту историю?]]
-</tw-passagedata><tw-passagedata pid="2" name="..но кто тогда рассказывает мне эту историю?" tags="" position="750,525" size="100,100">Меня зовут Аурен.
+&lt;div id=&quot;custom-menu&quot; style=&quot;display: none;&quot;&gt;
+	&lt;&lt;link &quot;⬅️ Назад&quot;&gt;&gt;
+		&lt;&lt;run Engine.backward()&gt;&gt;
+	&lt;&lt;/link&gt;&gt;
 
-Я не жил в Киндрелии. Никогда не бродил по её улицам, не слушал голосов её жителей и не видел света её рассветов.
+	&lt;&lt;link &quot;➡️ Вперёд&quot;&gt;&gt;
+		&lt;&lt;run Engine.forward()&gt;&gt;
+	&lt;&lt;/link&gt;&gt;
 
-Когда Киндрелия погибла, я ещё не существовал. Я был всего лишь свёрнутым комком жизни в скорлупе, застывшим в неподвижном мире.
+	&lt;&lt;link &quot;💾 Сохранить&quot;&gt;&gt;
+		&lt;&lt;run UI.saves()&gt;&gt;
+	&lt;&lt;/link&gt;&gt;
 
-Я не знаю, сколько времени провёл во тьме. Никто не знает. Я вылупился, когда Киндрелии уже не было. Лишь её останки стали частью нового мира — Zivery.
+	&lt;&lt;link &quot;🔄 Перезапустить&quot;&gt;&gt;
+		&lt;&lt;run Engine.restart()&gt;&gt;
+	&lt;&lt;/link&gt;&gt;
+&lt;/div&gt;
 
-Но даже в этом мире я чувствую её дыхание. В старых руинах, в сломанных артефактах, в затёртых записях, что едва уцелели. Киндрелия жива в них — растерзанная, забытая, но не исчезнувшая вовсе.
+</tw-passagedata><tw-passagedata pid="5" name="CustomSoundToggle" tags="" position="200,100" size="100,100">&lt;!-- CustomSoundToggle --&gt;
+&lt;div id=&quot;sound-button&quot; class=&quot;sound-on&quot;&gt;&lt;/div&gt;
 
-Я посвятил свою жизнь её поискам. Собирал обрывки рассказов, пергаменты, слухи... Всё, что осталось. Я не жил в Киндрелии, но я знаю её. Почти так же, как знал бы родной дом, если бы вырос в его руинах.
+&lt;script&gt;
+document.addEventListener(&quot;DOMContentLoaded&quot;, function () {
+    const soundButton = document.getElementById(&quot;sound-button&quot;);
 
-Этот труд — &quot;Падение Киндрелии&quot; — всё, что мне удалось собрать. В нём правда, догадки и, быть может, даже ошибки... Но я надеюсь, что однажды кто-то найдёт в этих строках то, чего не смог увидеть я.
+    if (!soundButton) {
+        console.error(&quot;Кнопка звука не найдена!&quot;);
+        return;
+    }
 
-Потому что без понимания прошлого... невозможно построить будущее.
+    if (State.variables.musicMuted) {
+        soundButton.classList.add(&quot;muted&quot;);
+    } else {
+        soundButton.classList.remove(&quot;muted&quot;);
+    }
 
+    soundButton.addEventListener(&quot;click&quot;, function () {
+        if (window.musicPlayer) {
+            if (!window.musicPlayer.paused) {
+                window.musicPlayer.pause();
+                State.variables.musicTime = 0;
+                soundButton.classList.add(&quot;muted&quot;);
+                soundButton.classList.remove(&quot;sound-on&quot;);
+                State.variables.musicMuted = true;
+            } else {
+                window.musicPlayer.currentTime = State.variables.musicTime || 0;
+                window.musicPlayer.play().catch(e =&gt; console.warn(&quot;Ошибка при запуске музыки:&quot;, e));
+                soundButton.classList.remove(&quot;muted&quot;);
+                soundButton.classList.add(&quot;sound-on&quot;);
+                State.variables.musicMuted = false;
+            }
+        }
+    });
+});
+&lt;/script&gt;
+</tw-passagedata><tw-passagedata pid="6" name="Продолжай!" tags="" position="850,750" size="100,100">&lt;&lt;include &quot;CustomMenu&quot;&gt;&gt;
+
+&lt;&lt;set $storyBlocks = [
+  &quot;Это первый блок текста.\nОн длинный.&quot;,
+  &quot;Второй блок — ещё чуть длиннее.&quot;,
+  &quot;Финал.&quot;
+]&gt;&gt;
+
+&lt;&lt;set $choiceLinks = [
+  &quot;..Но кто тогда рассказывает мне эту историю?|Начало&quot;,
+  &quot;Не важно, идём дальше!|Не важно, идём дальше!&quot;
+]&gt;&gt;
+
+
+&lt;&lt;set $universalIndex = 0&gt;&gt;
+&lt;&lt;goto &quot;TextEngineUniversal&quot;&gt;&gt;
+</tw-passagedata><tw-passagedata pid="7" name="TextEngineUniversal" tags="" position="300,100" size="100,100">/* Универсальный движок показа многострочного текста по блокам с последующим выбором
+   Содержит визуальный стиль: плашка + стрелки ← → + анимация */
+
+&lt;!-- 🎨 Переменный фон --&gt;
+&lt;&lt;print &#39;&lt;div id=&quot;background&quot; style=&quot;background-image: url(\&#39;images/&#39; + $backgroundImage + &#39;\&#39;);&quot;&gt;&lt;/div&gt;&#39;&gt;&gt;
+
+&lt;!-- 🌕 Второй слой переднего фона --&gt;
+&lt;&lt;print &#39;&lt;div id=&quot;foreground-layer&quot; style=&quot;background-image: url(\&#39;images/&#39; + $foregroundImage + &#39;\&#39;);&quot;&gt;&lt;/div&gt;&#39;&gt;&gt;
+
+&lt;!-- 👤 Переменный персонаж --&gt;
+&lt;&lt;print &#39;&lt;img src=&quot;images/&#39; + $characterImage + &#39;&quot; class=&quot;character&quot;&gt;&#39; &gt;&gt;
+
+&lt;!-- 🔘 Кнопка звука --&gt;
+&lt;div id=&quot;sound-button&quot; class=&quot;sound-on&quot;&gt;&lt;/div&gt;
+
+
+&lt;&lt;script&gt;&gt;
+$(document).on(&#39;:passagerender&#39;, function () {
+  $(document).off(&#39;click&#39;, &#39;#nextBtn&#39;);
+  $(document).off(&#39;click&#39;, &#39;#backBtn&#39;);
+
+  function renderChoicePanel() {
+    $(&#39;#choice-panel&#39;).remove();
+
+    const choiceLinks = State.variables.choiceLinks || [];
+    const html = `
+      &lt;div id=&quot;choice-panel&quot;&gt;
+        &lt;img src=&quot;images/plas.png&quot; class=&quot;choice-background&quot;&gt;
+        &lt;div class=&quot;choice-content&quot;&gt;
+          ${choiceLinks.map(link =&gt; {
+            const [text, passage] = link.split(&quot;|&quot;);
+            return `&lt;a class=&#39;link-internal&#39; data-passage=&quot;${passage}&quot;&gt;${text}&lt;/a&gt;`;
+          }).join(&quot;&lt;br&gt;&quot;)}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    `;
+    $(&#39;#dialog-block&#39;).append(html);
+
+    // 🔁 Повторно навешиваем обработчик при отрисовке
+    $(&#39;.link-internal&#39;).on(&#39;click&#39;, function () {
+      const passage = $(this).attr(&#39;data-passage&#39;);
+      $(&#39;#choice-panel&#39;).remove();
+      State.variables.choiceLinks = [];
+      State.variables.storyBlocks = [];
+      Engine.play(passage);
+    });
+  }
+
+  // Кнопка ВПЕРЁД →
+  $(document).on(&#39;click&#39;, &#39;#nextBtn&#39;, function () {
+    if (State.variables.universalIndex &lt; State.variables.storyBlocks.length - 1) {
+      State.variables.universalIndex++;
+      $(&#39;#text-container&#39;).html(State.variables.storyBlocks[State.variables.universalIndex].replace(/\n/g, &quot;&lt;br&gt;&quot;));
+      $(&#39;#choice-panel&#39;).remove();
+    } else {
+      renderChoicePanel();
+    }
+  });
+
+  // Кнопка НАЗАД ←
+  $(document).on(&#39;click&#39;, &#39;#backBtn&#39;, function () {
+    if (State.variables.universalIndex &gt; 0) {
+      State.variables.universalIndex--;
+      $(&#39;#text-container&#39;).html(State.variables.storyBlocks[State.variables.universalIndex].replace(/\n/g, &quot;&lt;br&gt;&quot;));
+      $(&#39;#choice-panel&#39;).remove();
+    } else {
+      renderChoicePanel();
+    }
+  });
+});
+&lt;&lt;/script&gt;&gt;
+
+
+&lt;!-- Меню --&gt;
+&lt;&lt;include &quot;CustomMenu&quot;&gt;&gt;
+
+&lt;&lt;if !$universalIndex&gt;&gt;
+  &lt;&lt;set $universalIndex = 0&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;div id=&quot;dialog-block&quot;&gt;
+
+  &lt;!-- Левая стрелка --&gt;
+  &lt;button id=&quot;backBtn&quot; class=&quot;arrow-button&quot;&gt;
+    &lt;img src=&quot;images/arrowleft.png&quot; class=&quot;btn-image&quot;&gt;
+  &lt;/button&gt;
+
+  &lt;!-- Правая стрелка --&gt;
+  &lt;button id=&quot;nextBtn&quot; class=&quot;arrow-button&quot;&gt;
+    &lt;img src=&quot;images/arrowright.png&quot; class=&quot;btn-image&quot;&gt;
+  &lt;/button&gt;
+
+  &lt;!-- Золотая плашка --&gt;
+  &lt;img src=&quot;images/plashka.png&quot; class=&quot;gold-plashka&quot;&gt;
+
+  &lt;!-- Контейнер текста --&gt;
+  &lt;div id=&quot;text-container&quot; class=&quot;text-inside&quot;&gt;
+    &lt;&lt;print $storyBlocks[$universalIndex].replace(/\n/g, &quot;&lt;br&gt;&quot;)&gt;&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
 </tw-passagedata></tw-storydata>
 	<script id="script-sugarcube" type="text/javascript">
 	/*! SugarCube JS */
