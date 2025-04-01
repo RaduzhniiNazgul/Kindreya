@@ -676,7 +676,23 @@ $(document).on(':passagerender', function () {
     }
   });
 });
-</script><tw-passagedata pid="1" name="Начало" tags="" position="850,375" size="100,100">&lt;&lt;set $foregroundImage = &quot;foregroundImage.png&quot;&gt;&gt;
+</script><tw-passagedata pid="1" name="Начало" tags="" position="850,375" size="100,100">&lt;!-- PWA --&gt;
+&lt;link rel=&quot;manifest&quot; href=&quot;manifest.json&quot;&gt;
+&lt;meta name=&quot;theme-color&quot; content=&quot;#6a4ae2&quot;&gt;
+&lt;link rel=&quot;icon&quot; href=&quot;icons/icon-192.png&quot;&gt;
+&lt;link rel=&quot;apple-touch-icon&quot; href=&quot;icons/icon-512.png&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+
+&lt;script&gt;
+  if (&#39;serviceWorker&#39; in navigator) {
+    navigator.serviceWorker.register(&#39;service-worker.js&#39;)
+      .then(reg =&gt; console.log(&#39;✅ Service worker registered&#39;))
+      .catch(err =&gt; console.error(&#39;❌ Service worker error:&#39;, err));
+  }
+&lt;/script&gt;
+
+
+&lt;&lt;set $foregroundImage = &quot;foregroundImage.png&quot;&gt;&gt;
 &lt;&lt;set $backgroundImage = &quot;yourBackgroundImage.png&quot;&gt;&gt;
 &lt;&lt;set $characterImage = &quot;character.png&quot;&gt;&gt;
 &lt;&lt;set $musicTrack = &quot;Thebeginning.mp3&quot;&gt;&gt;
@@ -695,6 +711,7 @@ $(document).on(':passagerender', function () {
 
 &lt;&lt;set $universalIndex = 0&gt;&gt;
 &lt;&lt;goto &quot;TextEngineUniversal&quot;&gt;&gt;
+
 </tw-passagedata><tw-passagedata pid="2" name="..Но кто тогда рассказывает мне эту историю?" tags="" position="750,525" size="100,100">&lt;div class=&quot;auren-block&quot;&gt;
   Меня зовут Аурен.&lt;br&gt;&lt;br&gt;
 
