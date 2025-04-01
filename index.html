@@ -120,6 +120,29 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
 	<tw-storydata name="Kindrelia" startnode="1" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="78ACF449-5E0D-4CD4-B068-35E3C6E2287F" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+<button id="installBtn" style="position: absolute; top: 10px; right: 10px; z-index: 9999;">📲 Установить Kindreya</button>
+
+<script>
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+installBtn.style.display = 'none';
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'block';
+
+  installBtn.addEventListener('click', () => {
+    installBtn.style.display = 'none';
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
+      deferredPrompt = null;
+    });
+  });
+});
+</script>
+
+
 /* ===== ОБЩЕЕ ОФОРМЛЕНИЕ СЦЕНЫ ===== */
 
 html, body {
